@@ -227,6 +227,14 @@
     #define _vox_le32toh(x)  (x)
 #endif
 
+#ifndef __cplusplus
+    #include <stdbool.h>
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
     // denotes an invalid group index. Usually this is only applicable to the scene's root group's parent.
     static const uint32_t k_invalid_group_index = UINT32_MAX;
 
@@ -246,7 +254,7 @@
     } ogt_vox_transform;
     
     ogt_vox_transform ogt_vox_transform_get_identity();
-    ogt_vox_transform ogt_vox_transform_multiply(const ogt_vox_transform & a, const ogt_vox_transform & b);
+    ogt_vox_transform ogt_vox_transform_multiply(const ogt_vox_transform *a, const ogt_vox_transform *b);
 
     // a palette of colors
     typedef struct ogt_vox_palette
@@ -295,7 +303,7 @@
     typedef struct ogt_vox_matl
     {
         uint32_t      content_flags; // set of k_ogt_vox_matl_* OR together to denote contents available
-        ogt_matl_type type;
+        uint32_t      type;
         float         metal;
         float         rough;
         float         spec;
@@ -321,7 +329,7 @@
     typedef struct ogt_vox_cam
     {
         uint32_t     camera_id;
-        ogt_cam_mode mode;
+        uint32_t     mode;
         float        focus[3];    // the target position
         float        angle[3];    // rotation in degree
         float        radius;
@@ -469,6 +477,10 @@
     //  ogt_vox_sample_group_transform_local returns the transform relative to its parent group
     ogt_vox_transform ogt_vox_sample_group_transform_global(const ogt_vox_group* group, uint32_t frame_index, const ogt_vox_scene* scene);
     ogt_vox_transform ogt_vox_sample_group_transform_local(const ogt_vox_group* group, uint32_t frame_index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // OGT_VOX_H__
 
